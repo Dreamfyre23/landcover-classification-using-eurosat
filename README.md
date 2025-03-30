@@ -1,1 +1,1 @@
-# landcover-classification-using-eurosat
+landcover-classification-using-eurosat
