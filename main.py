@@ -3,6 +3,13 @@ import json
 import os
 
 class Handler(BaseHTTPRequestHandler):
+
+    def do_GET(self):  # New method for browser access
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(b"Send POST requests to this endpoint (use curl/Postman).")
+        
     def do_POST(self):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
