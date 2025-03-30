@@ -1,10 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import os
+import sys
 
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        print("Received POST request")  # Visible in your terminal
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
@@ -16,6 +16,11 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(response.encode())
 
 if __name__ == "__main__":
-    port = 8080  # Test on the same port Cloud Run uses
-    print(f"🔥 Server running at http://localhost:{port}")
-    HTTPServer(('0.0.0.0', port), Handler).serve_forever()
+    port = int(os.environ.get("PORT", 8080))
+    print(f"✅ Server starting on 0.0.0.0:{port}", file=sys.stderr)  # Force logs to stderr
+    server = HTTPServer(('0.0.0.0', port), Handler)
+    try:
+        server.serve_forever()
+    except Exception as e:
+        print(f"❌ Server crashed: {e}", file=sys.stderr)
+        raise
